@@ -1,6 +1,6 @@
 # Grid Terraform
 
-![Grid Banner](../grid-docs/readme-assets/banner.png)
+![Grid Banner](readme-assets/banner.png)
 
 > **Infrastructure as Code modules for Grid Platform** - Reusable, multi-cloud Terraform configurations for the Infrastructure Orchestration Platform
 
