@@ -1,52 +1,84 @@
 # Grid Terraform
 
-![Grid Banner](readme-assets/banner.png)
+Product module bank for [Grid](https://github.com/gridplatform/grid): standalone Terraform modules the Grid CLI copies into generated workspaces.
 
-> **Infrastructure as Code modules for Grid Platform** - Reusable, multi-cloud Terraform configurations
+This repository is the source of truth for Grid module paths—not a personal module library.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Terraform](https://img.shields.io/badge/Terraform-7B42BC?logo=terraform&logoColor=white)](https://terraform.io/)
-[![HCL](https://img.shields.io/badge/HCL-623CE4?logo=hashicorp&logoColor=white)](https://github.com/hashicorp/hcl)
+## Purpose
 
-## 🎯 Purpose
+Each folder under a cloud provider id is **one Terraform module** for **one** cloud product or service. Callers (Grid CLI or your root configuration) compose modules and wire dependencies. Modules do not create resources belonging to other products.
 
-Grid Terraform provides reusable, production-ready Terraform modules for the Grid Infrastructure Orchestration Platform. Deploy infrastructure across GCP, AWS, and Azure with consistent, well-tested configurations.
+Provider requirements are declared in each module’s `versions.tf`. The repo root `versions.tf` lists provider pins for workspaces that compose many modules from this bank.
 
-## ✨ Key Features
+## Layout
 
-- **Multi-Cloud Modules** - GCP, AWS, and Azure support
-- **Reusable Components** - DRY infrastructure patterns
-- **Production Ready** - Tested and validated modules
-- **Cost Optimized** - Right-sized configurations
-- **Security First** - Built-in security best practices
-- **Documentation** - Comprehensive module documentation
-- **Version Management** - Semantic versioning for modules
-
-## 🚀 Quick Start
-
-```bash
-# Clone the repository
-git clone https://github.com/gridplatform/grid-terraform.git
-cd grid-terraform
-
-# Initialize Terraform
-terraform init
-
-# Deploy example infrastructure
-cd examples/vpc-only
-terraform apply
+```
+grid-terraform/
+├── aws/
+├── gcp/
+├── azure/
+├── oracle/
+├── ibm/
+├── alibaba/
+├── tencent/
+├── huawei/
+├── ovh/
+├── deutsche-telekom/
+├── ctrls/
+├── yotta/
+├── rancher/
+├── openshift/
+├── redis-enterprise/
+├── confluent-cloud/
+└── versions.tf          # root provider requirements
 ```
 
-## 📚 Learn More
+## How Grid uses the bank
 
-- **📖 [Full Documentation](https://github.com/gridplatform/grid-docs)** - Complete module reference and guides
-- **💬 [Discord Community](https://discord.gg/gridplatform)** - Get help and connect with users
-- **🐛 [Report Issues](https://github.com/gridplatform/grid-terraform/issues)** - Found a bug? Let us know!
+1. Author a Grid JSON config (`provider` + `resources`).
+2. Run `grid generate` to copy needed modules into `generated/modules/`.
+3. Generated `main.tf` references `./modules/...` so apply works from the copied tree.
+4. Override the bank path with `GRID_MODULE_BANK` for local forks or testing.
 
-## 🤝 Contributing
+Default resolution from `grid-cli`: sibling `../grid-terraform`.
 
-We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details.
+## Module counts
 
----
+| Provider folder | Modules |
+|-----------------|--------:|
+| `aws` | 219 |
+| `gcp` | 126 |
+| `azure` | 133 |
+| `oracle` | 98 |
+| `ibm` | 65 |
+| `alibaba` | 84 |
+| `tencent` | 61 |
+| `huawei` | 108 |
+| `ovh` | 42 |
+| `deutsche-telekom` | 48 |
+| `ctrls` | 30 |
+| `yotta` | 30 |
+| `rancher` | 40 |
+| `openshift` | 29 |
 
-**Built with ❤️ by the Grid Platform team**
+Counts are one directory per module under each provider folder.
+
+## Observability modules
+
+Representative monitoring and logging modules by hyperscaler:
+
+| Cloud | Modules |
+|-------|---------|
+| AWS | `aws/cloudwatch` |
+| GCP | `gcp/monitoring`, `gcp/monitoring-alert-policy`, `gcp/cloud-logging` |
+| Azure | `azure/monitor`, `azure/log-analytics`, `azure/application-insights` |
+
+Other providers include product-specific monitoring folders (for example `oracle/monitoring`, `ibm/monitoring`, `alibaba/cms`, `tencent/monitor`, `tencent/cls`, `huawei/ces-monitoring`, `ovh/metrics`, `deutsche-telekom/ces`).
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for module rules, formatting, and pull request expectations.
+
+## Sync note
+
+Ongoing Grid changes should land in the Grid org module bank (`gridplatform/grid-terraform` or your org remote), not by pointing the CLI at unrelated personal repos.

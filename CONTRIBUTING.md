@@ -1,172 +1,79 @@
-# Contributing to Grid Core
+# Contributing to Grid Terraform
 
-Thank you for your interest in contributing to Grid Core! This document provides guidelines and information for contributors.
+This repository is the **product module bank** for Grid: standalone Terraform modules, one cloud product or service per folder. The Grid CLI copies modules from here into generated workspaces.
 
-## 🤝 How to Contribute
+Thank you for contributing. Keep changes focused, reviewable, and aligned with the rules below.
 
-### Reporting Issues
+## Module rules
 
-- Use the [GitHub Issues](https://github.com/gridplatform/grid-core/issues) to report bugs
-- Provide detailed information about the issue
-- Include steps to reproduce the problem
-- Attach relevant logs and error messages
+1. **One product per module** — A module under `{provider}/{service}/` owns only that service’s resources. Do not create VPC resources inside an RDS module, or call other modules from inside a module.
+2. **Standalone** — Callers compose modules and pass IDs/ARNs. No nested `module` blocks that pull sibling bank modules.
+3. **Provider layout** — Place modules under the matching provider folder (`aws/`, `gcp/`, `azure/`, …). Do not add a shared cross-cloud module tree.
+4. **Timeless comments** — File headers explain what the module does. Avoid temporary status language in `.tf` files.
+5. **Docs** — Repository documentation lives in `README.md` and this file. Do not add per-module `README.md` files unless maintainers ask for an exception.
 
-### Suggesting Features
+## Repository layout
 
-- Use the [GitHub Discussions](https://github.com/gridplatform/grid-core/discussions) for feature requests
-- Describe the use case and expected behavior
-- Consider the impact on existing functionality
+```
+grid-terraform/
+├── aws/ … openshift/     # provider → service modules
+├── versions.tf           # root provider requirements
+├── README.md
+└── CONTRIBUTING.md
+```
 
-### Code Contributions
+Each service folder typically contains `main.tf`, `variables.tf`, `outputs.tf`, and `versions.tf`.
 
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/your-feature-name`
-3. **Make your changes** following our coding standards
-4. **Add tests** for new functionality
-5. **Update documentation** as needed
-6. **Commit your changes**: `git commit -m "Add your feature"`
-7. **Push to your fork**: `git push origin feature/your-feature-name`
-8. **Create a Pull Request**
+## Adding or changing a module
 
-## 📋 Development Guidelines
-
-### Code Style
-
-- Follow [TypeScript best practices](https://typescript-eslint.io/rules/)
-- Use [Prettier](https://prettier.io/) for code formatting
-- Use [ESLint](https://eslint.org/) for linting
-- Use meaningful variable and function names
-- Add JSDoc comments for public APIs
-
-### Type Safety
-
-- Use TypeScript strict mode
-- Define interfaces for all data structures
-- Use proper typing for function parameters and return values
-- Avoid `any` type unless absolutely necessary
-
-### Testing
-
-- Write unit tests for all new functionality
-- Maintain test coverage above 80%
-- Use [Jest](https://jestjs.io/) for testing
-- Include integration tests for API endpoints
-- Test error cases and edge conditions
-
-### API Design
-
-- Follow RESTful conventions
-- Use proper HTTP status codes
-- Implement proper error handling
-- Add request/response validation
-- Document all API endpoints
-
-## 🧪 Testing
-
-### Running Tests
+1. Fork and branch from the default branch.
+2. Add or edit files under the correct `{provider}/{service}/` path.
+3. Declare `required_providers` in the module’s `versions.tf`. Align major constraints with root `versions.tf` when you introduce a new provider.
+4. Prefer clear variable names, typed objects, and useful outputs (IDs, ARNs, names, endpoints).
+5. Run formatting before you push:
 
 ```bash
-# Run all tests
-npm test
-
-# Run with coverage
-npm run test:coverage
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run specific test file
-npm test -- src/controllers/auth.test.ts
+terraform fmt -recursive
 ```
 
-### Test Structure
+6. If the Grid CLI catalog must list the module, update `grid-cli`’s resource catalog (or run the catalog sync script in that repo) so `modulePath` matches this folder and a `main.tf` exists.
+7. Open a pull request with a short description of the service and any consumer impact.
 
-```
-tests/
-├── unit/              # Unit tests
-│   ├── controllers/
-│   ├── services/
-│   ├── models/
-│   └── utils/
-├── integration/       # Integration tests
-│   ├── api/
-│   └── database/
-└── fixtures/          # Test fixtures
-    ├── users.json
-    └── infrastructure.json
+### Integrity checks (Grid CLI companion)
+
+From the sibling `grid-cli` repo (when available):
+
+```bash
+node scripts/verify-catalog-bank.js
 ```
 
-## 🏗️ Project Structure
+Every catalog `modulePath` must resolve to a `main.tf` in this bank.
 
-### Adding New API Endpoints
+## Pull requests
 
-1. Define route in `src/routes/`
-2. Create controller in `src/controllers/`
-3. Add service logic in `src/services/`
-4. Add validation schemas
-5. Add tests
-6. Update API documentation
+- One concern per PR when possible (single service or a tight set of related modules).
+- Include `terraform fmt -recursive` (check should pass).
+- Note breaking variable/output renames in the PR body.
+- At least one maintainer review before merge.
 
-### Adding New Services
+## Commit messages
 
-1. Create service class in `src/services/`
-2. Add interfaces in `src/types/`
-3. Add error handling
-4. Add tests
-5. Update documentation
-
-## 📝 Commit Messages
-
-Use clear, descriptive commit messages:
+Use short, imperative subjects:
 
 ```
-feat: add user authentication endpoint
-fix: resolve memory leak in infrastructure service
-docs: update API documentation
-test: add unit tests for cost optimization
-refactor: improve error handling in controllers
+feat(aws): add route53 health check module
+fix(azure): correct private dns vnet link registration
+docs: clarify module composition rules
+chore: bump root aws provider lower bound
 ```
 
-## 🔍 Code Review Process
+## Issues and discussion
 
-1. **Automated Checks**: All PRs must pass CI/CD checks
-2. **Code Review**: At least one maintainer must approve
-3. **Testing**: All tests must pass
-4. **Documentation**: Documentation must be updated
-5. **Performance**: Consider performance impact
+- **Bugs** — Steps to reproduce, provider version, relevant plan/apply errors (redact secrets).
+- **New services** — Name the cloud product, intended Terraform resources, and whether Grid CLI should expose a catalog type.
 
-## 🐛 Bug Reports
+## Questions
 
-When reporting bugs, please include:
+Prefer GitHub Issues or Discussions on this repository’s remote. For Grid platform product questions, use the Grid org docs and community channels listed in the main Grid project.
 
-- **Description**: Clear description of the issue
-- **Steps to Reproduce**: Detailed steps to reproduce
-- **Expected Behavior**: What should happen
-- **Actual Behavior**: What actually happens
-- **Environment**: Node.js version, OS, dependencies
-- **Logs**: Relevant error messages and logs
-
-## 💡 Feature Requests
-
-When suggesting features:
-
-- **Use Case**: Describe the problem you're trying to solve
-- **Proposed Solution**: How you think it should work
-- **Alternatives**: Other solutions you've considered
-- **Additional Context**: Any other relevant information
-
-## 📚 Resources
-
-- [Grid Platform Documentation](https://docs.gridplatform.org)
-- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
-- [Express.js Documentation](https://expressjs.com/)
-- [Jest Documentation](https://jestjs.io/docs/getting-started)
-- [Node.js Best Practices](https://github.com/goldbergyoni/nodebestpractices)
-
-## 🤔 Questions?
-
-- **GitHub Discussions**: [Ask questions](https://github.com/gridplatform/grid-core/discussions)
-- **Discord**: [Join our community](https://discord.gg/gridplatform)
-- **Email**: [Contact us](mailto:support@gridplatform.org)
-
-Thank you for contributing to Grid Core! 🚀
+Thank you for helping keep the bank clean and usable in public.

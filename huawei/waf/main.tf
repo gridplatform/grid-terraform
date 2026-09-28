@@ -1,0 +1,14 @@
+/**
+ * Huawei Cloud — waf
+ *
+ * Provisions Waf via the huaweicloud Terraform provider.
+ */
+
+resource "terraform_data" "scaffold" {
+  input = {
+    cloud       = "huawei"
+    module      = "waf"
+    tf_provider = "huaweicloud"
+    note        = "module placeholder"
+  }
+}

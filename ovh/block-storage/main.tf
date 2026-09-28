@@ -1,0 +1,14 @@
+/**
+ * OVHcloud — block-storage
+ *
+ * Provisions Block Storage via the ovh Terraform provider.
+ */
+
+resource "terraform_data" "scaffold" {
+  input = {
+    cloud       = "ovh"
+    module      = "block-storage"
+    tf_provider = "ovh"
+    note        = "module placeholder"
+  }
+}
