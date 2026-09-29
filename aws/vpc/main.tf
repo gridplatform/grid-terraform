@@ -4,8 +4,10 @@
  */
 
 locals {
-  num_public  = max(length(var.public_subnets), length(var.azs))
-  num_private = max(length(var.private_subnets), length(var.azs))
+  # Public: listed CIDRs win; else one subnet per AZ (auto CIDR).
+  num_public = length(var.public_subnets) > 0 ? length(var.public_subnets) : length(var.azs)
+  # Private: only when CIDRs are listed. Empty = public-only (do not use length(azs)).
+  num_private = length(var.private_subnets) > 0 ? length(var.private_subnets) : 0
   nat_count   = var.enable_nat_gateway ? (var.single_nat_gateway ? 1 : local.num_public) : 0
   num_priv_rt = local.num_private > 0 ? (var.enable_nat_gateway ? (var.single_nat_gateway ? 1 : local.nat_count) : 1) : 0
 }
