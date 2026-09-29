@@ -1,5 +1,7 @@
 /**
- * GKE cluster and multiple node pools. Network from gcp/network; IAM managed via gcp/iam using per-pool service_account.
+ * GKE cluster only. Prefer one Grid JSON unit per node pool (gcp/gke-node-pool)
+ * so pools can be planned/destroyed independently. `node_pools` remains for
+ * legacy embeds; leave it empty for the recommended layout.
  */
 
 locals {

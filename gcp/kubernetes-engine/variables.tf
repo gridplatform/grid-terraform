@@ -407,7 +407,7 @@ variable "node_pools" {
     }), null)
   }))
   default     = {}
-  description = "Map of node pool name to config. Empty = no node pools."
+  description = "Legacy: map of node pool name → config inside the cluster module. Prefer separate gke-node-pool units (one YAML each). Default empty."
 }
 
 variable "labels" {

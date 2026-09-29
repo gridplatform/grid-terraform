@@ -55,14 +55,16 @@ grid-terraform/
 1. Author Grid JSON (`provider` + `resources`) in **grid-config** (or any config root).
 2. Run `grid generate` — CLI resolves `type` → `modulePath` and **copies** modules from this bank.
 3. Generated `main.tf` references `./modules/…` so apply works from the copied tree alone.
-4. Override the bank path with `GRID_MODULE_BANK` for local forks or CI.
+4. Override the bank with `GRID_MODULE_BANK` — a **git URL** (cloned to cache) or a local path.
 
 ```bash
-git clone https://github.com/gridplatform/grid-terraform.git
-export GRID_MODULE_BANK=$PWD/grid-terraform
-```
+# Remote (default for Grid Core)
+export GRID_MODULE_BANK=https://github.com/gridplatform/grid-terraform.git
+export GRID_MODULE_BANK_REF=main
 
-Default when developing next to `grid-cli`: sibling `../grid-terraform`.
+# Or a local checkout while developing modules
+export GRID_MODULE_BANK=/path/to/grid-terraform
+```
 
 ## Module coverage (approximate)
 
