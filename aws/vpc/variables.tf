@@ -17,7 +17,8 @@ variable "cidr" {
 
 variable "azs" {
   type        = list(string)
-  description = "Availability zone names or IDs (e.g. [\"us-east-1a\", \"us-east-1b\"])"
+  default     = []
+  description = "Availability zones (e.g. [\"us-east-1a\"]). Grid fills this when public_subnets are present."
 }
 
 variable "public_subnets" {

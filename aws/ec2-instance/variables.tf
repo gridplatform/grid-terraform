@@ -10,7 +10,9 @@ variable "name" {
 
 variable "ami" {
   type        = string
-  description = "AMI ID (e.g. from data.aws_ami or SSM)"
+  default     = null
+  nullable    = true
+  description = "AMI ID. Null/empty uses the latest Amazon Linux 2023 (x86_64)."
 }
 
 variable "instance_type" {
@@ -33,6 +35,7 @@ variable "associate_public_ip_address" {
 variable "key_name" {
   type        = string
   default     = null
+  nullable    = true
   description = "Key pair name for SSH"
 }
 
@@ -40,6 +43,12 @@ variable "vpc_security_group_ids" {
   type        = list(string)
   default     = []
   description = "Security group IDs"
+}
+
+variable "root_volume_size" {
+  type        = number
+  default     = 8
+  description = "Root EBS volume size (GiB)"
 }
 
 variable "tags" {
