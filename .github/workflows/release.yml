@@ -44,7 +44,15 @@ jobs:
           terraform_wrapper: false
 
       - name: Terraform fmt (check)
-        run: terraform fmt -check -recursive
+        run: |
+          set -euo pipefail
+          if ! terraform fmt -check -recursive -diff; then
+            echo ""
+            echo "::error::terraform fmt check failed. Run locally:"
+            echo "  cd grid-terraform && terraform fmt -recursive"
+            echo "Then commit the reformatted .tf files."
+            exit 1
+          fi
 
       - name: Update channel tags
         run: |
