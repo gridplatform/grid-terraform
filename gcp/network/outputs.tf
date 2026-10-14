@@ -23,17 +23,6 @@ output "subnet_self_links" {
   value       = { for k, v in google_compute_subnetwork.subnets : k => v.self_link }
 }
 
-output "route_names" {
-  description = "Created route names"
-  value       = [for r in google_compute_route.routes : r.name]
-}
-
-output "peering_names" {
-  description = "Created VPC peering names"
-  value       = [for p in google_compute_network_peering.peering : p.name]
-}
-
-# Private Service Access (when enable_private_service_access = true)
 output "private_service_access_reserved_range_name" {
   description = "Name of the reserved range for Private Service Access"
   value       = var.enable_private_service_access ? google_compute_global_address.private_service_access_range[0].name : null
@@ -44,7 +33,6 @@ output "private_service_access_address" {
   value       = var.enable_private_service_access ? google_compute_global_address.private_service_access_range[0].address : null
 }
 
-# Additional outputs for GKE and other consumers
 output "vpc_id" {
   description = "VPC ID (alias for network_id)"
   value       = google_compute_network.vpc.id

@@ -14,3 +14,14 @@ variable "region" {
   default     = null
   description = "Region / location (provider-specific)"
 }
+
+variable "subnets" {
+  type = list(object({
+    name        = string
+    cidr        = string
+    region      = optional(string)
+    description = optional(string)
+  }))
+  default     = []
+  description = "Fabric subnets (Unit A); folded from catalog type subnet"
+}
