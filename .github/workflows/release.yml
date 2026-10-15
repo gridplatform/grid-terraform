@@ -1,10 +1,7 @@
 name: Release
 
-# Publishes a GitHub Release for the module bank on immutable semver tags only
-# (vX.Y.Z / vX.Y.Z-lts). Do NOT force-move floating git tags like `current` —
-# that breaks `git pull --tags` for every clone (tag clobber).
-#
-# Pin modules with GRID_MODULE_BANK_REF / Admin “module version” (e.g. v0.1.0).
+# Creates a GitHub Release when a semver tag is pushed (`vX.Y.Z` or `vX.Y.Z-lts`).
+# Module pins use that tag via GRID_MODULE_BANK_REF / Admin → Sources.
 
 on:
   push:
