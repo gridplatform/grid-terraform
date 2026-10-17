@@ -6,8 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 Pin production with `GRID_MODULE_BANK_REF=vX.Y.Z`. Platform notes:
-[Changelog](https://github.com/gridplatform/grid-docs/blob/main/docs/Install/Changelog.md) ·
-[Releases](https://github.com/gridplatform/grid-docs/blob/main/docs/Install/Releases.md).
+[Changelog](https://gridplatform.github.io/doc/Install/Changelog) ·
+[Releases](https://gridplatform.github.io/doc/Install/Releases).
 
 ## [Unreleased]
 

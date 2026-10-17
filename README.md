@@ -6,7 +6,7 @@ When Grid generates infrastructure from JSON, it pulls the modules it needs from
 
 > Plain Terraform — no lock-in. Pin a release tag, fork for your org, or copy modules into your archive. The stack stays operable if Grid is removed.
 
-**Docs:** [grid-docs](https://github.com/gridplatform/grid-docs) · **CLI:** [grid-cli](https://github.com/gridplatform/grid-cli)
+**Docs:** [grid-docs](https://gridplatform.github.io/doc/) · **CLI:** [grid-cli](https://github.com/gridplatform/grid-cli)
 
 ## Design
 
@@ -60,7 +60,7 @@ Issues: [grid-terraform/issues](https://github.com/gridplatform/grid-terraform/i
 | [grid-cli](https://github.com/gridplatform/grid-cli) | Maps JSON → modules here |
 | [grid-core](https://github.com/gridplatform/grid-core) | Runs generate + Terraform for the console |
 | [grid-config](https://github.com/gridplatform/grid-config) | Example JSON that points at these modules |
-| [grid-docs](https://github.com/gridplatform/grid-docs) | Guides |
+| [grid-docs](https://gridplatform.github.io/doc/) | Guides |
 
 ## License
 
