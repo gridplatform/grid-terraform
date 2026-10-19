@@ -1,6 +1,6 @@
 variable "name" {
   type        = string
-  description = "Resource name / prefix for eks-gpu-node-group"
+  description = "Resource name / prefix for gpu-node-group"
 }
 
 variable "labels" {

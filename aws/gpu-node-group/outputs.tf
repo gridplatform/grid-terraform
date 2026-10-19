@@ -5,5 +5,5 @@ output "scaffold_id" {
 
 output "module" {
   description = "Module identifier"
-  value       = "aws/gpu-node-pool"
+  value       = "aws/gpu-node-group"
 }

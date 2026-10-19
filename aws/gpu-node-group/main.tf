@@ -1,13 +1,13 @@
 /**
- * Amazon Web Services — eks-gpu-node-group
+ * Amazon Web Services — gpu-node-group
  *
- * Provisions Eks Gpu Node Group via the aws Terraform provider.
+ * Provisions Gpu Node Group via the aws Terraform provider.
  */
 
 resource "terraform_data" "scaffold" {
   input = {
     cloud       = "aws"
-    module      = "eks-gpu-node-group"
+    module      = "gpu-node-group"
     tf_provider = "aws"
     note        = "module placeholder"
   }
